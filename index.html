@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slider Permutation Generator</title>
+    <style>
+        body {  
+            font-family: Arial, sans-serif;  
+            margin: 20px;  
+        }
+        .slider-container {  
+            margin: 20px 0;  
+        }
+        input[type="range"] {  
+            width: 100%;  
+        }
+        .output {  
+            margin-top: 10px;  
+            font-size: 1.2em;  
+        }
+    </style>
+</head>
+<body>
+    <h1>Slider Permutation Generator</h1>
+    <div class="slider-container">
+        <label for="slider">Select a number:</label>
+        <input type="range" id="slider" min="1" max="10" value="1">
+        <div class="output">Current number: <span id="current-value">1</span></div>
+    </div>
+    <script>
+        const slider = document.getElementById('slider');
+        const currentValue = document.getElementById('current-value');
+        slider.oninput = function() {
+            currentValue.textContent = this.value;
+        };
+    </script>
+</body>
+</html>
