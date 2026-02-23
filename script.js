@@ -4,6 +4,7 @@
  */
 
 class SliderController {
+
     constructor() {
         this.minSliders = 2;
         this.maxSliders = 12;
@@ -23,19 +24,29 @@ class SliderController {
         this.addBtn.addEventListener('click', () => this.addSlider());
     }
 
-    /**
-     * User-defined function that takes slider values and returns output values
-     * Replace this with your calculation logic
-     * 
-     * @param {number[]} values - Array of slider values
-     * @returns {number[]} - Array of calculated output values
-     */
-    calculateOutputValues(values) {
-        // PLACEHOLDER: Replace this with your actual calculation
-        // You have access to numeric.js for integral calculations
-        // Example: return values.map(v => v * 2); // doubles each value
-        
-        return values.map(v => v * 2);
+    probabilityLastExact(weights, i) {
+        const others = weights.map((w, idx) => ({ w, idx })).filter(obj => obj.idx !== i).map(obj => obj.w);
+
+        const n = others.length;
+        let total = 0;
+        const subsets = 1 << n;
+        for (let mask = 0; mask < subsets; mask++) {
+            let sum = 0;
+            let bits = 0;
+            for (let j = 0; j < n; j++) {
+                if (mask & (1 << j)) {
+                    sum += others[j];
+                    bits++;
+                }
+            }
+        const sign = (bits % 2 === 0) ? 1 : -1;
+        total += sign * weights[i] / (weights[i] + sum);
+        }
+    return total;
+    }
+
+    probabilitiesLastExact(weights) {
+        return weights.map((_, i) => this.probabilityLastExact(weights, i));
     }
 
     addSlider() {
@@ -60,7 +71,7 @@ class SliderController {
     }
 
     calculateOutputs() {
-        this.outputValues = this.calculateOutputValues(this.sliderValues);
+        this.outputValues = this.probabilitiesLastExact(this.sliderValues);
         this.updateDisplays();
     }
 
